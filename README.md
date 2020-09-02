@@ -10,6 +10,7 @@ A portion of my dotfiles were either copied from or inspired by Derk Taylor (Dis
 The following were copied from DistroTube:
 * .xmonad/xpm
 * .local/bin/pacupdate
+
 The following were inspired by portions of DistroTube's configs:
 * .xmonad/xmonad.hs
 * .xmobarrc
