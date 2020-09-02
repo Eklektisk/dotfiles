@@ -1,0 +1,88 @@
+#!/bin/sh
+#
+# search
+# Search the internet from a list of search engines
+#
+# While dmenu is the default interface, other interfaces
+# can be used by commenting out the dmenu sections
+# and uncommenting the appropriate sections
+#
+# Before running, make sure that ~/.searchengines exists
+# and is properly formatted.
+# Each line should contain one entry in the following manner:
+# <URL> <Name of search engine>
+#
+# All URLS are handled with xdg-open
+
+# Funtion taken from stack overflow
+# https://unix.stackexchange.com/questions/60653/urlencode-function
+urlencode_grouped_case () {
+  string=$1; format=; set --
+  while
+    literal=${string%%[!-._~0-9A-Za-z]*}
+
+    case "$literal" in
+      ?*)
+        format=$format%s
+        set -- "$@" "$literal"
+        string=${string#$literal}
+        ;;
+    esac
+
+    case "$string" in
+      "") false;;
+    esac
+  do
+    tail=${string#?}
+    head=${string%$tail}
+    format=$format%%%02x
+    set -- "$@" "'$head"
+    string=$tail
+  done
+
+  printf "$format\\n" "$@"
+} 
+
+write_error() {
+  # dmenu
+  notify-send "Error executing search" "$1"
+  
+  # zenity
+  #zenity --error --width=350 --text "$1"
+}
+
+[[ ! -f "$HOME/.searchengines" ]] && write_error "Unable to locate $HOME/.searchengines" && exit 1
+
+# Remove all comments from the engines file...
+ENGINES_FILE=$(grep "^[^#]" "$HOME/.searchengines")
+
+# ...and extract engine names now for easier use later
+ENGINES_LIST=$(echo "$ENGINES_FILE" | awk '{$1=""; print substr($0,2)}')
+
+# -- dmenu -----------------------------------------------------
+alias dmenu_cmd="dmenu" # "dmenu -c -l 20"
+
+SEARCH=$(echo "" | dmenu_cmd -p "Search term:")
+[[ -z $SEARCH ]] && exit 2
+
+ENGINE=$(echo "$ENGINES_LIST" | dmenu_cmd -i -p "Search using:")
+[[ -z $ENGINE ]] && exit 2
+# --------------------------------------------------------------
+
+# -- zenity ----------------------------------------------------
+#SEARCH=$(zenity --entry --text "What do you want to search?")
+#[[ -z $SEARCH ]] && exit 2
+#
+#ENGINE=$(echo "$ENGINES_LIST" | zenity --list --text "Which site do you want to search?" --column "Search Engines")
+#[[ -z $ENGINE ]] && exit 2
+# --------------------------------------------------------------
+
+# Grab the base url...
+URL=$(echo "$ENGINES_FILE" | grep -h "^[^#]\S* $ENGINE$" | cut -d ' ' -f 1)
+[[ -z $URL ]] && write_error "Could not identify search engine" && exit 1
+
+# ...and append the search term
+URL="${URL}$(urlencode_grouped_case "$SEARCH")"
+
+# Open URL in default browser
+exec xdg-open "$URL"

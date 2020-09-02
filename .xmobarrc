@@ -1,0 +1,106 @@
+Config {
+    -- Appearance
+      font            = "xft:Hack:pixelsize=18:hinting=true"
+    , additionalFonts = [ "xft:Mononoki Nerd Font:pixelsize=16:antialias=true:hinting=true" ]
+    , bgColor         = "black"
+    , fgColor         = "grey"
+    , alpha           = 240
+    , position        = Static { xpos = 0, ypos = 0, width = 1920, height = 26 }
+    , border          = BottomB
+    , borderColor     = "black"
+
+    -- Somewhere between these two sections...
+    , textOffset = -1
+    , iconOffset = -1
+    , iconRoot   = "/home/eklektisk/.xmonad/xpm/"
+
+    -- Layout
+    , sepChar  = "%"
+    , alignSep = "}{"
+    , template = " <icon=haskell_20.xpm/>  %battery% | %multicpu% | %memory% | %dynnetwork% | Keys: %locks% }{ <fn=1></fn> %pacupdate% | <icon=calendar-clock-icon_20.xpm/> <fc=#ee9a00>%date%</fc> | %uname% "
+
+    -- General Behavior
+    , lowerOnStart     = True     -- send to bottom of window stack on start
+    , hideOnStart      = False    -- start with window unmapped
+    , allDesktops      = True     -- show on all desktops
+    , overrideRedirect = True     -- set the Override Redirect flag (Xlib)
+    , pickBroadest     = False    -- choose the widest display (multi monitor)
+    , persistent       = False    -- enable/disable hiding (True = disabled)
+
+    -- Plugins
+    --   Numbers can be automatically colored according to their value. xmobar
+    --   decides color based on a three-tier/two-cuttoff system, controlled by
+    --   command options:
+    --     --Low sets the low cutoff
+    --     --High sets the high cutoff
+    --
+    --     --low sets the color below --Low cutoff
+    --     --normal sets the color between --Low and --High cutoffs
+    --     --high sets the color above --High cutoff
+    --
+    --   The --template option controls how the plugin is displayed. Text
+    --   color can be set by enclosing in <fc></fc> tags. For more detais
+    --   se https://hackage.haskell.org/package/xmobar.
+    , commands = [
+
+	  -- Locks
+	    Run Locks
+
+      -- Time and Date Indicator
+      , Run Date "%a %Y %b %_d %H:%M:%S" "date" 10
+
+      -- Network Activity Monitor (dynamic interface resolution)
+      , Run DynNetwork [
+            "--template" , "<dev>: <icon=net_up_20.xpm/><tx>kB/s <icon=net_down_20.xpm/><rx>kB/s"
+          , "--Low"      , "1000"
+          , "--High"     , "5000"
+          , "--low"      , "darkgreen"
+          , "--normal"   , "darkorange"
+          , "--high"     , "darkred"
+        ] 10
+      
+      -- CPU Activity Monitor
+      , Run MultiCpu [
+            "--template" , "<icon=cpu_0_20.xpm/><total0>% <icon=cpu_1_20.xpm/><total1>%"
+          , "--Low"      , "50"
+          , "--High"     , "85"
+          , "--low"      , "darkgreen"
+          , "--normal"   , "darkorange"
+          , "--high"     , "darkred"
+        ] 10
+	  
+      -- Memory Usage Monitor
+      , Run Memory [
+            "--template" , "<icon=memory-icon_20.xpm/><usedratio>%"
+          , "--Low"      , "20"
+          , "--High"     , "90"
+          , "--low"      , "darkgreen"
+          , "--normal"   , "darkorange"
+          , "--high"     , "darkred"
+        ] 10
+      
+      -- Pacman Update Monitor
+      , Run Com "pacupdate" [] "" 60
+
+      -- Uname
+      , Run Com "uname" ["-s","-r"] "" 36000
+
+      -- Battery Monitor
+      , Run Battery [
+            "--template" , "<icon=battery_20.xpm/><acstatus>"
+          , "--Low"      , "10"
+          , "--High"     , "80"
+          , "--low"      , "darkred"
+          , "--normal"   , "darkorange"
+          , "--high"     , "darkgreen"
+          , "--"  -- Battery Specific Options
+                     -- Discharging status
+                     , "-o" , "<left>% (<timeleft>)"
+                     -- AC "On" Status
+                     , "-O" , "<fc=#daa520>Charging</fc>"
+                     -- Charged Status
+                     , "-i" , "<fc=#006000>Charged</fc>"
+        ] 50
+      
+    ]
+}

@@ -1,0 +1,9 @@
+[Unit]
+Description=Automate podboat
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/podentr
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,32 @@
+! Save lines
+xterm*savedLines:  4096
+
+! Enable clipboard
+xterm*selectToClipboard: true
+
+! Set font
+xterm*faceName:    TrueType
+xterm*font:        Hack
+xterm*faceSize:    15
+
+! Set colors
+xterm*foreground:  rgb:dd/dd/dd
+xterm*background:  rgb:00/00/00
+
+xterm*color0:      rgb:00/00/00
+xterm*color1:      rgb:a8/00/00
+xterm*color2:      rgb:00/a8/00
+xterm*color3:      rgb:a8/54/00
+xterm*color4:      rgb:00/00/a8
+xterm*color5:      rgb:a8/00/a8
+xterm*color6:      rgb:00/a8/a8
+xterm*color7:      rgb:a8/a8/a8
+xterm*color8:      rgb:76/76/76
+xterm*color9:      rgb:f2/20/1f
+xterm*color10:     rgb:23/fd/00
+xterm*color11:     rgb:ff/fd/00
+xterm*color12:     rgb:1a/8f/ff
+xterm*color13:     rgb:fd/28/ff
+xterm*color14:     rgb:14/ff/ff
+xterm*color15:     rgb:ff/ff/ff
+

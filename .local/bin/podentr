@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# entr command to run "queueandnotify" when newsboat queue is change
+# code derived from Luke Smith
+
+[ "$(pgrep -x "$(basename "$0")" | wc -l)" -gt 2 ] && exit 1
+
+echo /home/eklektisk/.newsboat/queue | entr -p /home/eklektisk/.local/bin/queueandnotify 2>/dev/null

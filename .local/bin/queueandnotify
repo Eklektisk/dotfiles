@@ -1,0 +1,18 @@
+#!/bin/sh
+# Script by Luke Smith that replaces podboat
+queuefile="$HOME/.newsboat/queue"
+
+[ -d "$HOME/Podcasts" ] || mkdir $HOME/Podcasts
+
+while read -r line; do
+	[ -z "$line" ] && continue
+	url="$(echo "$line" | awk '{print $1}')"
+	base="$(basename "$url")"
+	notify-send "Queuing $base..."
+	idnum="$(tsp curl -LO "$url")"
+	realname="$(echo "$base" | sed "s/?\(source\|dest\|blob\).*//;s/%20/_/g")"
+	tsp -D "$idnum" mv "$base" "$HOME/Podcasts/$realname"
+	tsp -D "$idnum" notify-send "$realname done."
+done < "$queuefile"
+
+echo > "$queuefile"
