@@ -25,7 +25,13 @@ augroup filetype_config
 augroup END
 
 if has('nvim')
-	" Neovim specific commands
+	" Copied from reddit (ConinuedBug)
+	" https://www.reddit.com/r/neovim/comments/igc5kr/how_to_restore_last_cursor_position_on_file_reopen/g2t52yq
+	augroup vimrc-remember-cursor-position
+		au!
+
+		autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+	augroup END
 else
 	source $VIMRUNTIME/defaults.vim
 endif

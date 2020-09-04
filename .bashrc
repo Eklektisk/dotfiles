@@ -58,7 +58,7 @@ alias LC='sudo loginctl'
 # Pacman and yay
 alias unlock='sudo rm /var/lib/pacman/db.lck'
 alias cleanup='sudo pacman -Rns $(pacman -Qtdq)'
-alias yaya='yay -a'
+alias up='yay -Su'
 
 # Create shortcuts for common commands
 alias mv='mv -v'
