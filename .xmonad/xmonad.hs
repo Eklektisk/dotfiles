@@ -128,8 +128,7 @@ treeselectAction a = TS.treeselectAction a
       ]
     , Node (TS.TSNode "Badwolf" "Minimalist and privacy-oriented web browser" (spawn "badwolf")) []
     , Node (TS.TSNode "Firefox" "Open source web browser" (spawn "firefox")) []
-    , Node (TS.TSNode "FreeTube" "Open source desktop YouTube player built with privacy in mind" (spawn "freetube-bin")) []
-    , Node (TS.TSNode "FreeTube Vue" "Rewrite of FreeTube using a local API rather than Invidious" (spawn "freetube-vue-git")) []
+    , Node (TS.TSNode "FreeTube" "Open source desktop YouTube player built with privacy in mind" (spawn "freetube-vue-git")) []
     , Node (TS.TSNode "Neomutt" "Text-based mail client" (spawn (myTerminal ++ " -e neomutt"))) []
     , Node (TS.TSNode "Newsboat" "RSS reader" (spawn (myTerminal ++ " -e newsboat"))) []
     , Node (TS.TSNode "Search" "Internet search utility" (spawn "search -c -l 20")) []
@@ -373,18 +372,18 @@ myLogHook = updatePointer(0.5, 0.5) (0, 0)
 myStartupHook = do
     -- Change X settings
       spawnOnce "xbacklight -set 20"
-      spawnOnce "xset r rate 300 50 &"
-      spawnOnce "xset s 300 15 &"
-      spawnOnce "xsetroot -cursor_name left_ptr &"
-      spawnOnce "xss-lock -- physlock -d &"
+      spawnOnce "xset r rate 300 50"
+      spawnOnce "xset s 300 15"
+      spawnOnce "xsetroot -cursor_name left_ptr"
+      spawnOnce "xss-lock -- physlock"
     -- Polkit authentication agent
       spawnOnce "/usr/lib/mate-polkit/polkit-mate-authentication-agent-1"
     -- Desktop wallpaper, compositor, and notification server
-      spawnOnce "feh --no-fehbg --bg-fill /usr/local/share/backgrounds/forest-1.jpg &"
-      spawnOnce "picom -f &"
-      spawnOnce "dunst &"
+      spawnOnce "feh --no-fehbg --bg-fill /usr/local/share/backgrounds/forest-1.jpg"
+      spawnOnce "picom -f"
+      spawnOnce "dunst"
     -- Night light, hide mouse
-      spawnOnce "unclutter &"
+      spawnOnce "unclutter"
       spawnOnce "redshift"
     -- Set WM name so Java applications respect XMonad
       setWMName "LG3D"

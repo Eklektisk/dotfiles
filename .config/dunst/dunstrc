@@ -29,7 +29,7 @@
     # the top and down respectively.
     # The width can be negative.  In this case the actual width is the
     # screen width minus the width defined in within the geometry option.
-    geometry = "325x5-30+20"
+    geometry = "385-30+20"
 
     # Show how many messages are currently hidden (because of geometry).
     indicate_hidden = yes
@@ -57,7 +57,7 @@
     padding = 8
 
     # Horizontal padding.
-    horizontal_padding = 8
+    horizontal_padding = 16
 
     # Defines width in pixels of frame around the notification window.
     # Set to 0 to disable.
@@ -132,6 +132,10 @@
     # Possible values are "left", "center" and "right".
     alignment = left
 
+	# Vertical alignment of message text and icon.
+	# Possible values are "top", "center" and "bottom".
+	vertical_alignment=center
+
     # Show age of message if message is older than show_age_threshold
     # seconds.
     # Set to -1 to disable.
@@ -160,13 +164,13 @@
     ### Icons ###
 
     # Align icons left/right/off
-    icon_position = off
+    icon_position = left
 
     # Scale larger icons down to this size, set to 0 to disable
     max_icon_size = 32
 
     # Paths to default icons.
-    icon_path = /usr/share/icons/Adwaita/16x16/status/:/usr/share/icons/Adwaita/16x16/devices/:/usr/share/icons/Adwaita/16x16/legacy/
+    icon_path = /usr/share/icons/Adwaita/32x32/status/:/usr/share/icons/Adwaita/32x32/devices/:/usr/share/icons/Adwaita/32x32/legacy/
 
     ### History ###
 
@@ -279,14 +283,14 @@
     foreground = "#888888"
     timeout = 10
     # Icon for notifications with low urgency, uncomment to enable
-    #icon = /path/to/icon
+	icon = ""
 
 [urgency_normal]
     background = "#285577"
     foreground = "#ffffff"
     timeout = 10
     # Icon for notifications with normal urgency, uncomment to enable
-    #icon = /path/to/icon
+	icon = ""
 
 [urgency_critical]
     background = "#900000"
@@ -294,7 +298,7 @@
     frame_color = "#ff0000"
     timeout = 0
     # Icon for notifications with critical urgency, uncomment to enable
-    #icon = /path/to/icon
+	icon = ""
 
 # Every section that isn't one of the above is interpreted as a rules to
 # override settings for certain messages.
@@ -348,16 +352,38 @@
 	summary = "Volume:*"
 	set_stack_tag = "volume"
 	history_ignore = yes
+	new_icon=audio-volume-high
 
 [mute_volume]
 	summary = "Volume muted"
 	set_stack_tag = "volume"
 	history_ignore = yes
+	new_icon=audio-volume-muted
 
 [change_brightnes]
 	summary = "Brightness:*"
 	set_stack_tag = "brightness"
 	history_ignore = yes
+
+[low_battery]
+	summary = "LOW BATTERY"
+	set_stack_tag = "battery"
+	history_ignore = yes
+	new_icon=battery-low
+
+[full_battery]
+	summary = "BATTERY CHARGED"
+	set_stack_tag = "battery"
+	history_ignore = yes
+	new_icon=battery-full-charged
+
+#[podcast_queue]
+#	appname = "queueandnotify"
+#	summary = "Queueing *"
+#
+#[podcast_done]
+#	appname = "queueandnotify"
+#	summary = "Finished downloading *"
 
 # EXAMPLE SCRIPTS
 # Disable the transient hint so that idle_threshold cannot be bypassed from the

@@ -8,11 +8,11 @@ while read -r line; do
 	[ -z "$line" ] && continue
 	url="$(echo "$line" | awk '{print $1}')"
 	base="$(basename "$url")"
-	notify-send "Queuing $base..."
+  msgId=$(dunstify -p -a "queueandnotify" "Queuing $base...")
 	idnum="$(tsp curl -LO "$url")"
 	realname="$(echo "$base" | sed "s/?\(source\|dest\|blob\).*//;s/%20/_/g")"
 	tsp -D "$idnum" mv "$base" "$HOME/Podcasts/$realname"
-	tsp -D "$idnum" notify-send "$realname done."
+	tsp -D "$idnum" dunstify -r $msgId -a "queueandnotify" "Finished download $realname."
 done < "$queuefile"
 
 echo > "$queuefile"

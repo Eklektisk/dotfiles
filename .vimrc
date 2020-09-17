@@ -24,6 +24,12 @@ augroup filetype_config
 	autocmd FileType conf setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 augroup END
 
+augroup filetype_xml
+	au!
+
+	autocmd FileType xml setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+augroup END
+
 if has('nvim')
 	" Copied from reddit (ConinuedBug)
 	" https://www.reddit.com/r/neovim/comments/igc5kr/how_to_restore_last_cursor_position_on_file_reopen/g2t52yq

@@ -33,13 +33,12 @@ alias ls='ls -AhN --color=auto --group-directories-first'
 alias ccat='highlight --out-format=ansi'
 
 # System maintainence
-alias rfl='sudo reflector --protocol https --country "United States" --sort rate --save /etc/pacman.d/mirrorlist'
+alias regen='sudo reflector --protocol https --country "United States" --sort rate --save /etc/pacman.d/mirrorlist'
 alias ug='sudo grub-mkconfig -o /boot/grub/grub.cfg'
 alias mkin='sudo mkinitcpio'
 alias sd='sudo shutdown'
 alias sdn='sudo shutdown now'
 alias rb='sudo reboot'
-alias regen='sudo reflector --verbose --protocol https --country US --sort rate --save /etc/pacman.d/mirrorlist'
 
 # Account maintenance
 alias ga='sudo groupadd'
