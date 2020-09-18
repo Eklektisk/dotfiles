@@ -173,11 +173,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- launch freetube
     , ((modm .|. shiftMask, xK_y     ), spawn "freetube-vue-git")
 
-    -- launch scratchpad
-    , ((modm,               xK_x     ), spawn (myTerminal ++ " -e svim"))
-    
     -- treeselect action
     , ((modm,               xK_s     ), treeselectAction tsDefaultConfig)
+
+    -- toggle screensaver
+    , ((modm,               xK_x     ), spawn "toggleScreensaver")
 
     -- change screen brightness
     , ((0, xF86XK_MonBrightnessUp     ), spawn "changeBrightness -inc 5")

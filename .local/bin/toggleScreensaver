@@ -1,0 +1,4 @@
+#!/bin/sh
+
+[[ "$(xset q)" =~ "timeout:  0" ]] && xset s on || xset s off
+exit 0

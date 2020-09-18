@@ -17,7 +17,7 @@ Config {
     -- Layout
     , sepChar  = "%"
     , alignSep = "}{"
-    , template = " <icon=haskell_20.xpm/>  %battery% | %multicpu% | %memory% | %dynnetwork% | Keys: %locks% }{ <fn=1></fn> %pacupdate% | <icon=calendar-clock-icon_20.xpm/> <fc=#ee9a00>%date%</fc> | %uname% "
+    , template = " <icon=haskell_20.xpm/>  %battery% | %multicpu% | %memory% | %dynnetwork% | Keys: %locks% }{ <fn=1></fn> %pacupdate% | <icon=calendar-clock-icon_20.xpm/> <fc=#ee9a00>%date%</fc> | %uname% | %screensaver% "
 
     -- General Behavior
     , lowerOnStart     = True     -- send to bottom of window stack on start
@@ -83,7 +83,7 @@ Config {
       , Run Com "pacupdate" [] "" 60
 
       -- Uname
-      , Run Com "uname" ["-s","-r"] "" 36000
+      , Run Com "uname" ["-s","-r"] "" 0
 
       -- Battery Monitor
       , Run Battery [
@@ -101,6 +101,9 @@ Config {
                      -- Charged Status
                      , "-i" , "<fc=#006000>Charged</fc>"
         ] 50
+
+      -- Toggle Screensaver
+      , Run Com ".xmonad/screensaver" [] "screensaver" 10
       
     ]
 }
