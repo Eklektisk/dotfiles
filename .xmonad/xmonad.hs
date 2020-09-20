@@ -373,6 +373,7 @@ myStartupHook = do
     -- Change X settings
       spawnOnce "xbacklight -set 20"
       spawnOnce "xset r rate 300 50"
+      spawnOnce "xset +dpms"
       spawnOnce "xset s 300 15"
       spawnOnce "xsetroot -cursor_name left_ptr"
       spawnOnce "xss-lock -- physlock"
@@ -434,7 +435,10 @@ help = unlines ["The modifier key is 'super'. Default keybindings:",
     "mod-Shift-Enter  Launch alacritty",
     "mod-p            Launch dmenu",
     "mod-Shift-w      Launch firefox",
+    "mod-f            Launch search utility",
     "mod-Shift-y      Launch freetube",
+    "mod-s            Open treeselect menu",
+    "mod-x            Toggle screensaver/locker",
     "mod-Shift-c      Close/kill the focused window",
     "mod-Space        Rotate through the available layout algorithms",
     "mod-Shift-Space  Reset the layouts on the current workSpace to default",
@@ -466,6 +470,7 @@ help = unlines ["The modifier key is 'super'. Default keybindings:",
     "-- quit, or restart",
     "mod-Shift-q  Quit xmonad",
     "mod-q        Restart xmonad",
+    "mod-Shift-s  Open shutdown prompt",
     "mod-[1..9]   Switch to workSpace N",
     "",
     "-- Workspaces & screens",
