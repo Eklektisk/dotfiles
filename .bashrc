@@ -36,9 +36,8 @@ alias ccat='highlight --out-format=ansi'
 alias regen='sudo reflector --protocol https --country "United States" --sort rate --save /etc/pacman.d/mirrorlist'
 alias ug='sudo grub-mkconfig -o /boot/grub/grub.cfg'
 alias mkin='sudo mkinitcpio'
-alias sd='sudo shutdown'
 alias sdn='sudo shutdown now'
-alias rb='sudo reboot'
+alias rb='systemctl reboot'
 
 # Account maintenance
 alias ga='sudo groupadd'
@@ -85,14 +84,15 @@ alias mnt='sudo mount'
 alias umnt='sudo umount'
 alias ej='sudo eject'
 alias cu='checkupdates'
-alias vim='svim'
+alias vim='nvim'
 alias rwm='ffmpeg -f v4l2 -i /dev/video0 -f alsa -i default -c:v libx264 -preset ultrafast -c:a aac -video_size'
 alias rsm='ffmpeg -f x11grab -video_size 1920x1080 -framerate 25 -i $DISPLAY -f alsa -i default -c:v libx264 -preset ultrafast -c:a aac'
 alias wb='mpv av://v4l2:/dev/video0 --profile=low-latency --untimed'
+alias xg='mpv av://x11grab: --profile=low-latency --untimed'
 alias xmr='sudo ghc-pkg recache && xmonad --recompile'
 alias vns='sudo virsh net-start default'
 alias vnd='sudo virsh net-destroy default'
-alias gm='groff -ms -T pdf'
+alias g='groff -R -ms -T pdf'
 
 function rfind() {
   if [ "$#" -lt 2 ]; then

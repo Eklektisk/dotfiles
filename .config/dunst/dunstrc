@@ -170,7 +170,7 @@
     max_icon_size = 32
 
     # Paths to default icons.
-    icon_path = /usr/share/icons/Adwaita/32x32/status/:/usr/share/icons/Adwaita/32x32/devices/:/usr/share/icons/Adwaita/32x32/legacy/
+    icon_path = /usr/share/icons/Adwaita/32x32/status/:/usr/share/icons/Adwaita/32x32/devices/:/usr/share/icons/Adwaita/32x32/legacy/:/usr/share/icons/Adwaita/32x32/mimetypes/
 
     ### History ###
 
@@ -369,13 +369,19 @@
 	summary = "LOW BATTERY"
 	set_stack_tag = "battery"
 	history_ignore = yes
-	new_icon=battery-low
+	new_icon = battery-low
 
 [full_battery]
 	summary = "BATTERY CHARGED"
 	set_stack_tag = "battery"
 	history_ignore = yes
-	new_icon=battery-full-charged
+	new_icon = battery-full-charged
+
+[mpd_notification]
+	summary = "MPD NOTIFICATION"
+	set_stack_tag = "mpd"
+	history_ignore = yes
+	new_icon = audio-x-generic
 
 #[podcast_queue]
 #	appname = "queueandnotify"

@@ -105,7 +105,8 @@ myTreeNavigation = M.fromList
 treeselectAction :: TS.TSConfig (X ()) -> X ()
 treeselectAction a = TS.treeselectAction a
   [ Node (TS.TSNode "+ Accessories" "Accessory applications" (return ()))
-    [ Node (TS.TSNode "Qalculate" "GUI frontend for qalc" (spawn "qalculate-gtk")) []
+    [ Node (TS.TSNode "Ncmpcpp" "NCurses Music Player Client (Plus Plus)" (spawn (myTerminal ++ " -e ncmpcpp"))) []
+    , Node (TS.TSNode "Qalculate" "GUI frontend for qalc" (spawn "qalculate-gtk")) []
     , Node (TS.TSNode "Virt-Manager" "Virtual machine manager" (spawn "virt-manager")) []
     , Node (TS.TSNode "Zathura" "A minimalistic document viewer" (spawn "zathura")) []
     ]
@@ -187,6 +188,13 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((0, xF86XK_AudioRaiseVolume       ), spawn "changeVolume 2%+")
     , ((0, xF86XK_AudioLowerVolume       ), spawn "changeVolume 2%-")
     , ((0, xF86XK_AudioMute              ), spawn "changeVolume toggle")
+
+    -- mpd commands
+    , ((0, xF86XK_AudioPlay               ), spawn "mpc toggle")
+    , ((0, xF86XK_AudioPrev               ), spawn "mpc prev")
+    , ((0, xF86XK_AudioNext               ), spawn "mpc next")
+    , ((shiftMask, xF86XK_AudioRaiseVolume), spawn "mpc volume +2")
+    , ((shiftMask, xF86XK_AudioLowerVolume), spawn "mpc volume -2")
 
     -- close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
