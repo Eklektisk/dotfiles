@@ -17,7 +17,7 @@ Config {
     -- Layout
     , sepChar  = "%"
     , alignSep = "}{"
-    , template = " <icon=haskell_20.xpm/>  %battery% | %multicpu% | %memory% | %dynnetwork% | Keys: %locks% }{ <fn=1></fn> %pacupdate% | <icon=calendar-clock-icon_20.xpm/> <fc=#ee9a00>%date%</fc> | %uname% | %screensaver% "
+    , template = " <icon=haskell_20.xpm/> %StdinReader% }{ <fn=1></fn> %pacupdate% | %multicpu% | %memory% | %dynnetwork% | %battery% | %date% | %locks% %screensaver% "
 
     -- General Behavior
     , lowerOnStart     = True     -- send to bottom of window stack on start
@@ -43,25 +43,15 @@ Config {
     --   se https://hackage.haskell.org/package/xmobar.
     , commands = [
 
-	  -- Locks
-	    Run Locks
+	  -- Stdin Reader
+	  Run StdinReader
 
-      -- Time and Date Indicator
-      , Run Date "%a %Y %b %_d %H:%M:%S" "date" 10
+      -- Pacman Update Monitor
+      , Run Com "pacupdate" [] "" 60
 
-      -- Network Activity Monitor (dynamic interface resolution)
-      , Run DynNetwork [
-            "--template" , "<dev>: <icon=net_up_20.xpm/><tx>kB/s <icon=net_down_20.xpm/><rx>kB/s"
-          , "--Low"      , "1000"
-          , "--High"     , "5000"
-          , "--low"      , "darkgreen"
-          , "--normal"   , "darkorange"
-          , "--high"     , "darkred"
-        ] 10
-      
       -- CPU Activity Monitor
       , Run MultiCpu [
-            "--template" , "<icon=cpu_0_20.xpm/><total0>% <icon=cpu_1_20.xpm/><total1>%"
+            "--template" , "<icon=cpu_20.xpm/><total>%"
           , "--Low"      , "50"
           , "--High"     , "85"
           , "--low"      , "darkgreen"
@@ -79,11 +69,18 @@ Config {
           , "--high"     , "darkred"
         ] 10
       
-      -- Pacman Update Monitor
-      , Run Com "pacupdate" [] "" 60
+      -- Network Activity Monitor (dynamic interface resolution)
+      , Run DynNetwork [
+            "--template" , "<icon=net_up_20.xpm/><tx>kB/s <icon=net_down_20.xpm/><rx>kB/s"
+          , "--Low"      , "1000"
+          , "--High"     , "5000"
+          , "--low"      , "darkgreen"
+          , "--normal"   , "darkorange"
+          , "--high"     , "darkred"
+        ] 10
 
-      -- Uname
-      , Run Com "uname" ["-s","-r"] "" 0
+      -- Time and Date Indicator
+      , Run Date "<icon=calendar-clock-icon_20.xpm/><fc=#ee9a00>%a %Y %b %_d %H:%M:%S</fc>" "date" 10
 
       -- Battery Monitor
       , Run Battery [
@@ -97,12 +94,16 @@ Config {
                      -- Discharging status
                      , "-o" , "<left>% (<timeleft>)"
                      -- AC "On" Status
-                     , "-O" , "<fc=#daa520>Charging</fc>"
+                     , "-O" , "<fc=darkorange>Charging</fc>"
                      -- Charged Status
-                     , "-i" , "<fc=#006000>Charged</fc>"
+                     , "-i" , "<fc=darkgreen>Charged</fc>"
         ] 50
 
+	    -- Locks
+	  , Run Locks
+
       -- Toggle Screensaver
+
       , Run Com ".xmonad/screensaver" [] "screensaver" 10
       
     ]

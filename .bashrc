@@ -93,6 +93,7 @@ alias xmr='sudo ghc-pkg recache && xmonad --recompile'
 alias vns='sudo virsh net-start default'
 alias vnd='sudo virsh net-destroy default'
 alias g='groff -R -ms -T pdf'
+alias z='zathura'
 
 function rfind() {
   if [ "$#" -lt 2 ]; then
