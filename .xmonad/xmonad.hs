@@ -25,13 +25,16 @@ import qualified Data.Map        as M
 -- Preferences
 --
 myTerminal :: String
-myTerminal = "alacritty" -- Preferred terminal
+myTerminal = "alacritty"
 
 myBrowser :: String
-myBrowser = "firefox" -- Preferred browser
+myBrowser = "firefox"
 
 myFont :: String
-myFont = "xft:Hack:bold:size=13:antialias=true:hinting=true" -- Preferred font
+myFont = "xft:Hack:bold:size=13:antialias=true:hinting=true"
+
+myLocker :: String
+myLocker = "sxlock -f \"-misc-hack-medium-r-normal--50-0-*-*-m-0-ascii-0\""
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
@@ -73,20 +76,21 @@ myFocusedBorderColor = "#0055ff"
 -- Tree Select. Add, modify or remove actions here.
 
 tsDefaultConfig :: TS.TSConfig a
-tsDefaultConfig = TS.TSConfig { TS.ts_hidechildren = True
-                              , TS.ts_background   = 0xdd292d3e
-                              , TS.ts_font         = myFont
-                              , TS.ts_node         = (0xffdddddd, 0xff202331)
-                              , TS.ts_nodealt      = (0xffdddddd, 0xff292d3e)
-                              , TS.ts_highlight    = (0xffffffff, 0xff755999)
-                              , TS.ts_extra        = 0xffdddddd
-                              , TS.ts_node_width   = 300
-                              , TS.ts_node_height  = 26
-                              , TS.ts_originX      = 0
-                              , TS.ts_originY      = 0
-                              , TS.ts_indent       = 80
-                              , TS.ts_navigate     = myTreeNavigation
-                              }
+tsDefaultConfig = TS.TSConfig {
+    TS.ts_hidechildren = True
+  , TS.ts_background   = 0xdd282a36
+  , TS.ts_font         = myFont
+  , TS.ts_node         = (0xffdddddd, 0xff202331)
+  , TS.ts_nodealt      = (0xffdddddd, 0xff282a36)
+  , TS.ts_highlight    = (0xffffffff, 0xff1a8fff)
+  , TS.ts_extra        = 0xffdddddd
+  , TS.ts_node_width   = 300
+  , TS.ts_node_height  = 26
+  , TS.ts_originX      = 0
+  , TS.ts_originY      = 0
+  , TS.ts_indent       = 80
+  , TS.ts_navigate     = myTreeNavigation
+}
 
 myTreeNavigation = M.fromList
     [ ((0, xK_Escape),   TS.cancel)
@@ -132,7 +136,7 @@ treeselectAction a = TS.treeselectAction a
       ]
     , Node (TS.TSNode "Badwolf" "Minimalist and privacy-oriented web browser" (spawn "badwolf")) []
     , Node (TS.TSNode "Firefox" "Open source web browser" (spawn "firefox")) []
-    , Node (TS.TSNode "FreeTube" "Open source desktop YouTube player built with privacy in mind" (spawn "freetube-vue-git")) []
+    , Node (TS.TSNode "FreeTube" "Open source desktop YouTube player built with privacy in mind" (spawn "freetube")) []
     , Node (TS.TSNode "Neomutt" "Text-based mail client" (spawn (myTerminal ++ " -e neomutt"))) []
     , Node (TS.TSNode "Newsboat" "RSS reader" (spawn (myTerminal ++ " -e newsboat"))) []
     , Node (TS.TSNode "Search" "Internet search utility" (spawn "search -c -l 20")) []
@@ -141,7 +145,7 @@ treeselectAction a = TS.treeselectAction a
   , Node (TS.TSNode "+ System" "System tools and utilities" (return ()))
     [ Node (TS.TSNode "Alacritty" "GPU accelerated terminal" (spawn "alacritty")) []
     , Node (TS.TSNode "Glances" "Terminal system monitor" (spawn (myTerminal ++ " -e glances"))) []
-    , Node (TS.TSNode "Gotop" "Terminal-based graphical activity monitor" (spawn (myTerminal ++ " -e htop"))) []
+    , Node (TS.TSNode "Gotop" "Terminal-based graphical activity monitor" (spawn (myTerminal ++ " -e gotop"))) []
     , Node (TS.TSNode "Htop" "Terminal process viewer" (spawn (myTerminal ++ " -e htop"))) []
     , Node (TS.TSNode "Ranger" "Simple, vim-like file manager" (spawn (myTerminal ++ " -e ranger"))) []
     , Node (TS.TSNode "XTerm" "X terminal emulator" (spawn "xterm")) []
@@ -152,7 +156,7 @@ treeselectAction a = TS.treeselectAction a
     , Node (TS.TSNode "Recompile XMonad" "Recompile xmonad" (spawn "xmonad --recompile")) []
     , Node (TS.TSNode "Restart XMonad" "Restart xmonad" (spawn "xmonad --restart")) []
     ]
-  , Node (TS.TSNode "Lock" "Lock current session" (spawn "physlock -d")) []
+  , Node (TS.TSNode "Lock" "Lock current session" (spawn myLocker)) []
   , Node (TS.TSNode "Logout" "Logout of account" (io (exitWith ExitSuccess))) []
   , Node (TS.TSNode "Shutdown" "Poweroff the system" (spawn "sdprompt")) []
   ]
@@ -175,7 +179,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm              , xK_f     ), spawn "search")
     
     -- launch freetube
-    , ((modm .|. shiftMask, xK_y     ), spawn "freetube-vue-git")
+    , ((modm .|. shiftMask, xK_y     ), spawn "freetube")
 
     -- treeselect action
     , ((modm,               xK_s     ), treeselectAction tsDefaultConfig)
@@ -384,7 +388,7 @@ myStartupHook = do
       spawnOnce "xset +dpms"
       spawnOnce "xset s 300 15"
       spawnOnce "xsetroot -cursor_name left_ptr"
-      spawnOnce "xss-lock -- physlock"
+      spawnOnce ("xss-lock -- " ++ myLocker)
     -- Polkit authentication agent
       spawnOnce "/usr/lib/mate-polkit/polkit-mate-authentication-agent-1"
     -- Desktop wallpaper, compositor, and notification server
@@ -429,8 +433,8 @@ main = do
             , ppCurrent = xmobarColor "#19cb00" "" . wrap "[" "]" -- Current workspace in xmobar
             , ppHidden  = xmobarColor "#0dcdcd" "" . wrap "*" ""  -- Hidden workspaces in xmobar
             , ppHiddenNoWindows = xmobarColor "#0d73cc" ""        -- Hidden workspaces (no windows)
-            , ppUrgent  = xmobarColor "#f2201f" "" . wrap "!" ""  -- Hidden workspaces in xmobar
-            , ppTitle = xmobarColor "#19cb00" "" . shorten 40     -- Active window title
+            , ppUrgent  = xmobarColor "#f2201f" "" . wrap "!" "!" -- Urgent workspaces in xmobar
+            , ppTitle = xmobarColor "#19cb00" "" . shorten 37     -- Active window title
             , ppOrder  = \(ws:_:t:_) -> [ws,t]
           },
         startupHook        = myStartupHook

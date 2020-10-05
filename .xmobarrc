@@ -17,7 +17,7 @@ Config {
     -- Layout
     , sepChar  = "%"
     , alignSep = "}{"
-    , template = " <icon=haskell_20.xpm/> %StdinReader% }{ <fn=1></fn> %pacupdate% | %multicpu% | %memory% | %dynnetwork% | %battery% | %date% | %locks% %screensaver% "
+    , template = " <icon=haskell_20.xpm/> %StdinReader% }{ <fn=1></fn> %pacupdate% | %multicpu% | %memory% | %dynnetwork% | %volumeApp% |%date% | %locks% %screensaver% | %battery% "
 
     -- General Behavior
     , lowerOnStart     = True     -- send to bottom of window stack on start
@@ -79,6 +79,9 @@ Config {
           , "--high"     , "darkred"
         ] 10
 
+      -- Volume Monitor
+      , Run Com ".xmonad/volumeApp" [] "volumeApp" 10
+
       -- Time and Date Indicator
       , Run Date "<icon=calendar-clock-icon_20.xpm/><fc=#ee9a00>%a %Y %b %_d %H:%M:%S</fc>" "date" 10
 
@@ -103,7 +106,6 @@ Config {
 	  , Run Locks
 
       -- Toggle Screensaver
-
       , Run Com ".xmonad/screensaver" [] "screensaver" 10
       
     ]
