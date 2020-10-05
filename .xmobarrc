@@ -17,7 +17,7 @@ Config {
     -- Layout
     , sepChar  = "%"
     , alignSep = "}{"
-    , template = " <icon=haskell_20.xpm/> %StdinReader% }{ <fn=1></fn> %pacupdate% | %multicpu% | %memory% | %dynnetwork% | %volumeApp% |%date% | %locks% %screensaver% | %battery% "
+    , template = " <icon=haskell_20.xpm/> %StdinReader% }{ %pacupdate% | %unreadrss% | %multicpu% | %memory% | %dynnetwork% | %date% | %locks% %screensaver% | %battery% "
 
     -- General Behavior
     , lowerOnStart     = True     -- send to bottom of window stack on start
@@ -47,7 +47,10 @@ Config {
 	  Run StdinReader
 
       -- Pacman Update Monitor
-      , Run Com "pacupdate" [] "" 60
+      , Run Com ".xmonad/pacupdate" [] "pacupdate" 60
+
+      -- RSS Monitor
+      , Run Com ".xmonad/unreadRSS" [] "unreadrss" 10
 
       -- CPU Activity Monitor
       , Run MultiCpu [
@@ -78,9 +81,6 @@ Config {
           , "--normal"   , "darkorange"
           , "--high"     , "darkred"
         ] 10
-
-      -- Volume Monitor
-      , Run Com ".xmonad/volumeApp" [] "volumeApp" 10
 
       -- Time and Date Indicator
       , Run Date "<icon=calendar-clock-icon_20.xpm/><fc=#ee9a00>%a %Y %b %_d %H:%M:%S</fc>" "date" 10

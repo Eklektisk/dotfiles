@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo -e "<fn=1>\uf09e</fn> $(newsboat -x print-unread | awk -e '{print $1}')"
+

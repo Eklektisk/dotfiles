@@ -434,7 +434,7 @@ main = do
             , ppHidden  = xmobarColor "#0dcdcd" "" . wrap "*" ""  -- Hidden workspaces in xmobar
             , ppHiddenNoWindows = xmobarColor "#0d73cc" ""        -- Hidden workspaces (no windows)
             , ppUrgent  = xmobarColor "#f2201f" "" . wrap "!" "!" -- Urgent workspaces in xmobar
-            , ppTitle = xmobarColor "#19cb00" "" . shorten 37     -- Active window title
+            , ppTitle = xmobarColor "#19cb00" "" . shorten 40     -- Active window title
             , ppOrder  = \(ws:_:t:_) -> [ws,t]
           },
         startupHook        = myStartupHook
