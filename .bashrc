@@ -21,8 +21,8 @@ HISTSIZE= HISTFILESIZE=
 # Disable ctrl-s and ctrt-q
 stty -ixon
 
-# Use vi mode instead of emac mode
-set -o vi
+# Use vi mode instead of emac mode - moved to .inputrc
+#set -o vi
 
 # Add color to terminal and various commands
 alias diff='diff --color=auto'
@@ -92,8 +92,9 @@ alias xg='mpv av://x11grab: --profile=low-latency --untimed'
 alias xmr='sudo ghc-pkg recache && xmonad --recompile'
 alias vns='sudo virsh net-start default'
 alias vnd='sudo virsh net-destroy default'
-alias g='groff -R -ms -T pdf'
+alias g='groff -Re -ms -T pdf'
 alias z='zathura'
+alias lst='tree -a --dirsfirst'
 
 function rfind() {
   if [ "$#" -lt 2 ]; then

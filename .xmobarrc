@@ -1,7 +1,10 @@
 Config {
     -- Appearance
-      font            = "xft:Hack:pixelsize=18:hinting=true"
-    , additionalFonts = [ "xft:Mononoki Nerd Font:pixelsize=16:antialias=true:hinting=true" ]
+      font            = "xft:Hack:pixelsize=18:antialias=true:hinting=true,Mononoki Nerd Font:pixelsize=16:antialias=true:hinting=true"
+	  additionalFonts = [
+      "xft:Source Han Sans JP:pixelsize=18:antialias=true:hinting=true,Source Han Sans KR:pixelsize=18:antialias=true:hinting=true,Source Han Sans CN:pixelsize=18:antialias=true:hinting=true,Mononoki Nerd Font:pixelsize=16:antialias=true:hinting=true"
+	  ]
+
     , bgColor         = "black"
     , fgColor         = "grey"
     , alpha           = 240
@@ -17,7 +20,7 @@ Config {
     -- Layout
     , sepChar  = "%"
     , alignSep = "}{"
-    , template = " <icon=haskell_20.xpm/> %StdinReader% }{ %pacupdate% | %unreadrss% | %multicpu% | %memory% | %dynnetwork% | %date% | %locks% %screensaver% | %battery% "
+    , template = " <icon=haskell_20.xpm/>  %StdinReader% }{ %pacupdate% | %unreadrss% | %multicpu% | %memory% | %dynnetwork% | %date% | %locks% %screensaver% | %battery% "
 
     -- General Behavior
     , lowerOnStart     = True     -- send to bottom of window stack on start
@@ -50,7 +53,7 @@ Config {
       , Run Com ".xmonad/pacupdate" [] "pacupdate" 60
 
       -- RSS Monitor
-      , Run Com ".xmonad/unreadRSS" [] "unreadrss" 10
+      , Run Com ".xmonad/unreadRSS" [] "unreadrss" 60
 
       -- CPU Activity Monitor
       , Run MultiCpu [

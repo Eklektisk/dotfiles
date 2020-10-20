@@ -1,4 +1,6 @@
 #!/bin/sh
 
-echo -e "<fn=1>\uf09e</fn> $(newsboat -x print-unread | awk -e '{print $1}')"
+UNREAD="$(newsboat -x print-unread | awk -e '{print $1}')"
+[[ -z "$UNREAD" ]] && UNREAD="?"
+echo -e "\uf09e $UNREAD"
 

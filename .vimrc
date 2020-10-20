@@ -30,6 +30,12 @@ augroup filetype_xml
 	autocmd FileType xml setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 augroup END
 
+augroup filetype_css
+	au!
+
+	autocmd FileType css setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+augroup END
+
 if has('nvim')
 	set title
 

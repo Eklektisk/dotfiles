@@ -1,4 +1,4 @@
 #!/bin/sh
 
 # Script inspired by caffeine
-[[ "$(xset q)" =~ "timeout:  0" ]] && echo -e "<fc=#ff0000><fn=1>\uf0f4</fn>  ON</fc>" || echo -e "<fn=1>\uf0f4</fn> OFF"
+[[ "$(xset q)" =~ "timeout:  0" ]] && echo -e "<fc=#ff0000>\uf0f4  ON</fc>" || echo -e "\uf0f4 OFF"

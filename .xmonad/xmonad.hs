@@ -64,7 +64,10 @@ myModMask       = mod4Mask
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
+
+myWorkspaces :: [String]
+--myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
+myWorkspaces = ["一","二","三","四","五","六","七","八","九"]
 
 -- Border colors for unfocused and focused windows, respectively.
 --
@@ -434,8 +437,8 @@ main = do
             , ppHidden  = xmobarColor "#0dcdcd" "" . wrap "*" ""  -- Hidden workspaces in xmobar
             , ppHiddenNoWindows = xmobarColor "#0d73cc" ""        -- Hidden workspaces (no windows)
             , ppUrgent  = xmobarColor "#f2201f" "" . wrap "!" "!" -- Urgent workspaces in xmobar
-            , ppTitle = xmobarColor "#19cb00" "" . shorten 40     -- Active window title
-            , ppOrder  = \(ws:_:t:_) -> [ws,t]
+            , ppTitle   = xmobarColor "#19cb00" "" . shorten 40   -- Active window title
+            , ppOrder  = \(ws:_:t:_) -> ["<fn=1>" ++ ws ++ "</fn>",t]
           },
         startupHook        = myStartupHook
     }
