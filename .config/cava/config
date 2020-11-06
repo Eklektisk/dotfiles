@@ -1,0 +1,18 @@
+## Configuration file for CAVA. Default values are commented out. Use either ';' or '#' for commenting.
+
+[general]
+bars = 0
+bar_width = 1
+bar_spacing = 1
+
+[output]
+method = ncurses
+channels = stereo
+
+[color]
+gradient = 1
+gradient_count = 3
+gradient_color_1 = '#1a8fff'
+gradient_color_2 = '#14ffff'
+gradient_color_3 = '#23fd00'
+

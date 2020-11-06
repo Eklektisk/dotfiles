@@ -1,6 +1,6 @@
 Config {
     -- Appearance
-      font            = "xft:Hack:pixelsize=18:antialias=true:hinting=true,Mononoki Nerd Font:pixelsize=16:antialias=true:hinting=true"
+      font            = "xft:Hack:pixelsize=18:antialias=true:hinting=true,Source Han Sans JP:pixelsize=18:antialias=true:hinting=true,Source Han Sans KR:pixelsize=18:antialias=true:hinting=true,Source Han Sans CN:pixelsize=18:antialias=true:hinting=true,Mononoki Nerd Font:pixelsize=16:antialias=true:hinting=true"
 	  additionalFonts = [
       "xft:Source Han Sans JP:pixelsize=18:antialias=true:hinting=true,Source Han Sans KR:pixelsize=18:antialias=true:hinting=true,Source Han Sans CN:pixelsize=18:antialias=true:hinting=true,Mononoki Nerd Font:pixelsize=16:antialias=true:hinting=true"
 	  ]
