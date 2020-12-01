@@ -6,18 +6,27 @@ import Data.Tree
 import Graphics.X11.ExtraTypes.XF86
 import System.Exit
 import System.IO (hPutStrLn)
+import XMonad.Actions.SpawnOn
 import qualified XMonad.Actions.TreeSelect as TS
 import XMonad.Actions.UpdatePointer
 import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.EwmhDesktops
+import qualified XMonad.Hooks.EwmhDesktops as E
 import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.SetWMName
 import XMonad.Hooks.WorkspaceHistory
+import XMonad.Layout.BoringWindows (boringWindows,focusDown,focusUp,focusMaster)
+import XMonad.Layout.Fullscreen
+import XMonad.Layout.Renamed
+import XMonad.Layout.ResizableTile
+import XMonad.Layout.Simplest
 import XMonad.Layout.Spacing
+import XMonad.Layout.SubLayouts
+import XMonad.Layout.Tabbed
+import XMonad.Layout.WindowNavigation
 import qualified XMonad.StackSet as W
 import XMonad.Util.Dmenu
 import XMonad.Util.Run
 import XMonad.Util.SpawnOnce
+import XMonad.Util.Themes
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -170,34 +179,40 @@ treeselectAction a = TS.treeselectAction a
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- launch a terminal
-    [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
+    [ ((modm .|. shiftMask,   xK_Return), spawn $ XMonad.terminal conf)
 
     -- launch dmenu
-    , ((modm,               xK_p     ), spawn "dmenu_run")
+    , ((modm,                 xK_p     ), spawn "dmenu_run")
 
     -- launch browser
-    , ((modm .|. shiftMask, xK_w     ), spawn myBrowser)
+    , ((modm .|. shiftMask,   xK_w     ), spawn myBrowser)
     
     -- launch search utility
-    , ((modm              , xK_f     ), spawn "search")
+    , ((modm              ,   xK_f     ), spawn "search")
+
+    -- launch search utility
+    , ((modm              ,   xK_c     ), spawn "calc")
     
     -- launch freetube
-    , ((modm .|. shiftMask, xK_y     ), spawn "freetube")
+    , ((modm .|. shiftMask,   xK_y     ), spawn "freetube")
 
     -- treeselect action
-    , ((modm,               xK_s     ), treeselectAction tsDefaultConfig)
+    , ((modm,                 xK_s     ), treeselectAction tsDefaultConfig)
 
     -- toggle screensaver
-    , ((modm,               xK_x     ), spawn "toggleScreensaver")
+    , ((modm,                 xK_x     ), spawn "toggleScreensaver")
+
+    -- take screenshot
+    , ((0   ,                 xK_Print ), spawn "printscreen")
 
     -- change screen brightness
-    , ((0, xF86XK_MonBrightnessUp     ), spawn "changeBrightness -inc 5")
-    , ((0, xF86XK_MonBrightnessDown   ), spawn "changeBrightness -dec 5")
+    , ((0, xF86XK_MonBrightnessUp      ), spawn "changeBrightness -inc 5")
+    , ((0, xF86XK_MonBrightnessDown    ), spawn "changeBrightness -dec 5")
 
     -- change volume level
-    , ((0, xF86XK_AudioRaiseVolume       ), spawn "changeVolume 2%+")
-    , ((0, xF86XK_AudioLowerVolume       ), spawn "changeVolume 2%-")
-    , ((0, xF86XK_AudioMute              ), spawn "changeVolume toggle")
+    , ((0, xF86XK_AudioRaiseVolume     ), spawn "changeVolume 2%+")
+    , ((0, xF86XK_AudioLowerVolume     ), spawn "changeVolume 2%-")
+    , ((0, xF86XK_AudioMute            ), spawn "changeVolume toggle")
 
     -- mpd commands
     , ((0, xF86XK_AudioPlay               ), spawn "mpc toggle")
@@ -207,46 +222,62 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((shiftMask, xF86XK_AudioLowerVolume), spawn "mpc volume -2")
 
     -- close focused window
-    , ((modm .|. shiftMask, xK_c     ), kill)
-
-     -- Rotate through the available layout algorithms
-    , ((modm,               xK_space ), sendMessage NextLayout)
-
-    --  Reset the layouts on the current workspace to default
-    , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
+    , ((modm .|. shiftMask,   xK_c     ), kill)
 
     -- Resize viewed windows to the correct size
-    , ((modm,               xK_n     ), refresh)
+    , ((modm,                 xK_n     ), refresh)
 
-    -- Move focus to the next window
-    , ((modm,               xK_Tab   ), windows W.focusDown)
+    -- Move focus to the next group
+    , ((modm,                 xK_j     ), focusDown)
 
-    -- Move focus to the next window
-    , ((modm,               xK_j     ), windows W.focusDown)
-
-    -- Move focus to the previous window
-    , ((modm,               xK_k     ), windows W.focusUp  )
+    -- Move focus to the previous group
+    , ((modm,                 xK_k     ), focusUp  )
 
     -- Move focus to the master window
-    , ((modm,               xK_m     ), windows W.focusMaster  )
+    , ((modm,                 xK_m     ), focusMaster  )
+
+    -- Move focus to the previous window in group
+    , ((modm,                 xK_i     ), onGroup W.focusUp')
+
+    -- Move focus to the next window in group
+    , ((modm,                 xK_o     ), onGroup W.focusDown')
 
     -- Swap the focused window and the master window
-    , ((modm,               xK_Return), windows W.swapMaster)
+    , ((modm,                 xK_Return), windows W.swapMaster)
+    -- TODO: boringwindows
 
     -- Swap the focused window with the next window
-    , ((modm .|. shiftMask, xK_j     ), windows W.swapDown  )
+    , ((modm .|. shiftMask,   xK_j     ), windows W.swapDown  )
+    -- TODO: boringwindows
 
     -- Swap the focused window with the previous window
-    , ((modm .|. shiftMask, xK_k     ), windows W.swapUp    )
+    , ((modm .|. shiftMask,   xK_k     ), windows W.swapUp    )
+    -- TODO: boringwindows
 
     -- Shrink the master area
-    , ((modm,               xK_h     ), sendMessage Shrink)
+    , ((modm,                 xK_h     ), sendMessage Shrink)
 
     -- Expand the master area
-    , ((modm,               xK_l     ), sendMessage Expand)
+    , ((modm,                 xK_l     ), sendMessage Expand)
+
+    -- Shrink window vertically
+    , ((modm,                 xK_minus ), sendMessage MirrorShrink)
+
+    -- Expand the master area
+    , ((modm .|. shiftMask,   xK_equal ), sendMessage MirrorExpand)
+    -- FIXME: xK_plus is apparenlty a different key
+
+    -- Pull windows into tabs
+    , ((modm .|. controlMask, xK_h                   ), sendMessage $ pullGroup L)
+    , ((modm .|. controlMask, xK_l                   ), sendMessage $ pullGroup R)
+    , ((modm .|. controlMask, xK_j                   ), sendMessage $ pullGroup D)
+    , ((modm .|. controlMask, xK_k                   ), sendMessage $ pullGroup U)
+    , ((modm .|. controlMask, xK_m                   ), withFocused $ (sendMessage . MergeAll))
+    , ((modm .|. controlMask, xK_u                   ), withFocused $ (sendMessage . UnMerge))
+    , ((modm .|. shiftMask .|. controlMask, xK_u     ), withFocused $ (sendMessage . UnMergeAll))
 
     -- Push window back into tiling
-    , ((modm,               xK_t     ), withFocused $ windows . W.sink)
+    , ((modm,                 xK_t     ), withFocused $ windows . W.sink)
 
     -- Increment the number of windows in the master area
     , ((modm              , xK_comma ), sendMessage (IncMasterN 1))
@@ -254,20 +285,14 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Deincrement the number of windows in the master area
     , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
 
-    -- Toggle the status bar gap
-    -- Use this binding with avoidStruts from Hooks.ManageDocks.
-    -- See also the statusBar function from Hooks.DynamicLog.
-    --
-    -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
-
     -- Quit xmonad
-    , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
+    , ((modm .|. shiftMask,   xK_q     ), io (exitWith ExitSuccess))
 
     -- Restart xmonad
-    , ((modm              , xK_q     ), spawn "xmonad --recompile; pkill xmobar; xmonad --restart")
+    , ((modm              ,   xK_q     ), spawn "xmonad --recompile; pkill xmobar; xmonad --restart")
 
     -- Shutdown prompt
-    , ((modm .|. shiftMask, xK_s     ), spawn "sdprompt")
+    , ((modm .|. shiftMask,   xK_s     ), spawn "sdprompt")
     ]
     ++
 
@@ -322,19 +347,26 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 --
 
 -- myLayout = avoidStruts (tiled ||| Mirror tiled ||| Full)
-myLayout = avoidStruts $ spacingRaw False (Border 10 0 10 0) True (Border 0 10 0 10) True (tiled ||| Mirror tiled |||  Full)
-  where
-     -- default tiling algorithm partitions the screen into two panes
-     tiled   = Tall nmaster delta ratio
 
-     -- The default number of windows in the master pane
-     nmaster = 1
+mySpacing i = spacingRaw False (Border i 0 i 0) True (Border 0 i 0 i) True
+tall = renamed [Replace "tall"]
+       $ windowNavigation
+       $ addTabs shrinkText myTabTheme
+       $ subLayout [] (Simplest)
+       $ mySpacing 10
+       $ ResizableTall 1 (3/100) (1/2) []
 
-     -- Default proportion of screen occupied by master pane
-     ratio   = 1/2
+myLayout = avoidStruts $ fullscreenFull $ boringWindows $ tall
 
-     -- Percent of screen to increment by when resizing panes
-     delta   = 3/100
+myTabTheme = def {
+    fontName            = myFont
+  , activeColor         = "#1a8fff"
+  , inactiveColor       = "#767676"
+  , activeBorderColor   = "#0055ff"
+  , inactiveBorderColor = "#0055ff"
+  , activeTextColor     = "#000000"
+  , inactiveTextColor   = "#000000"
+}
 
 ------------------------------------------------------------------------
 -- Window rules:
@@ -351,7 +383,8 @@ myLayout = avoidStruts $ spacingRaw False (Border 10 0 10 0) True (Border 0 10 0
 -- To match on the WM_NAME, you can use 'title' in the same way that
 -- 'className' and 'resource' are used below.
 --
-myManageHook = composeAll
+
+myManageHook = manageSpawn <+> fullscreenManageHook <+> composeAll
     [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat
     , resource  =? "desktop_window" --> doIgnore
@@ -366,7 +399,7 @@ myManageHook = composeAll
 -- return (All True) if the default handler is to be run afterwards. To
 -- combine event hooks use mappend or mconcat from Data.Monoid.
 --
-myEventHook = ewmhDesktopsEventHook
+myEventHook = E.ewmhDesktopsEventHook <+> fullscreenEventHook
 
 ------------------------------------------------------------------------
 -- Status bars and logging
@@ -401,8 +434,6 @@ myStartupHook = do
     -- Night light, hide mouse
       spawnOnce "unclutter --timeout 1"
       spawnOnce "redshift"
-    -- Set WM name so Java applications respect XMonad
-      setWMName "LG3D"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
@@ -411,7 +442,7 @@ myStartupHook = do
 --
 main = do
   xmproc <- spawnPipe "xmobar"
-  xmonad $ docks $ ewmh def {
+  xmonad $ docks $ E.ewmh $ fullscreenSupport def {
       -- simple stuff
         terminal           = myTerminal,
         focusFollowsMouse  = myFocusFollowsMouse,
@@ -429,7 +460,7 @@ main = do
       -- hooks, layouts
         layoutHook         = myLayout,
         manageHook         = myManageHook,
-        handleEventHook    = myEventHook <+> fullscreenEventHook,
+        handleEventHook    = myEventHook,
         logHook            = workspaceHistoryHook <+> myLogHook <+> dynamicLogWithPP xmobarPP 
           {
               ppOutput  = \x -> hPutStrLn xmproc x

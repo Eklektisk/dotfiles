@@ -54,7 +54,7 @@ alias lc='loginctl'
 alias LC='sudo loginctl'
 
 # Pacman and yay
-alias unlock='sudo rm /var/lib/pacman/db.lck'
+alias unlock='sudo rm -v /var/lib/pacman/db.lck'
 alias cleanup='sudo pacman -Rns $(pacman -Qtdq)'
 alias up='yay -Su'
 
@@ -75,8 +75,6 @@ alias xref='xrdb ~/.Xresources'
 alias SS='sudo ss'
 alias st='speaker-test -c 2'
 alias bat='acpi --battery'
-alias nf='neofetch'
-alias nfd='neofetch --disable model resolution de wm wm_theme theme icons term_font cpu gpu memory'
 alias pf='pfetch'
 alias rn='rename -v'
 alias yd='youtube-dl'
@@ -92,9 +90,11 @@ alias xg='mpv av://x11grab: --profile=low-latency --untimed'
 alias xmr='sudo ghc-pkg recache && xmonad --recompile'
 alias vns='sudo virsh net-start default'
 alias vnd='sudo virsh net-destroy default'
-alias g='groff -Re -ms -T pdf'
+alias g='groff -Rte -ms -T pdf'
 alias z='zathura'
 alias lst='tree -a --dirsfirst'
+#alias nf='neofetch'
+#alias nfd='neofetch --disable model resolution de wm wm_theme theme icons term_font cpu gpu memory'
 
 function rfind() {
   if [ "$#" -lt 2 ]; then
@@ -102,15 +102,6 @@ function rfind() {
   else
     echo "$(find $1 -regextype posix-extended -regex "$2")"
   fi
-}
-
-function rn-g() {
-  run=true
-
-  while $run; do
-    rename -v $@
-    [ "$?" -eq 0 ] && run=true || run=false
-  done
 }
 
 function getkeysym() {
@@ -139,9 +130,4 @@ fi
 echo "pfetch"
 
 # ... run the command on start, ...
-# neofetch --disable model resolution de wm wm_theme theme icons term_font cpu gpu memory
 pfetch
-# ... and print some additional information
-# echo " There are $(pacman -Quq | wc -l) packages ready to be upgraded."
-# echo
-
